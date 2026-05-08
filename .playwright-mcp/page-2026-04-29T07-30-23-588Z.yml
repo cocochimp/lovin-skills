@@ -1,0 +1,76 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: CHENGDU TRAVEL
+    - heading "成都 · 参观路线速查" [level=1] [ref=e5]
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - text: 路线一：古蜀文明溯源
+      - generic [ref=e8]: 2天
+    - generic [ref=e9]:
+      - generic [ref=e10]: 🏛️Day1 三星堆博物馆（广汉，半天-1天）
+      - generic [ref=e11]: 必看：青铜大立人、纵目面具、神树、金杖
+      - generic [ref=e12]: 距成都40km，认真看需3-4小时
+    - generic [ref=e13]: ↓
+    - generic [ref=e14]:
+      - generic [ref=e15]: 🏛️Day2上午 金沙遗址博物馆（半天）
+      - generic [ref=e16]: 必看：太阳神鸟、金面具、遗迹馆象牙堆积
+    - generic [ref=e17]: ↓
+    - generic [ref=e18]:
+      - generic [ref=e19]: 🏛️Day2下午 成都博物馆2层（1-2小时）
+      - generic [ref=e20]: 必看：古蜀文明通史展
+  - generic [ref=e21]:
+    - generic [ref=e22]:
+      - text: 路线二：博物馆深度日
+      - generic [ref=e23]: 1天
+    - generic [ref=e24]:
+      - generic [ref=e25]: 🎨上午 四川博物院（2-3小时）
+      - generic [ref=e26]: 必看：张大千书画馆、说唱俑、象首耳铜罍
+    - generic [ref=e27]: ↓
+    - generic [ref=e28]:
+      - generic [ref=e29]: 🏡中午 杜甫草堂（1.5小时，紧邻博物院）
+      - generic [ref=e30]: 必看：诗史堂、茅屋故居、唐代遗址
+    - generic [ref=e31]: ↓
+    - generic [ref=e32]:
+      - generic [ref=e33]: 🏛️下午 成都博物馆（2小时）
+      - generic [ref=e34]: 必看：经穴漆人、织机模型、天府石犀
+  - generic [ref=e35]:
+    - generic [ref=e36]:
+      - text: 路线三：三国+古建
+      - generic [ref=e37]: 1天
+    - generic [ref=e38]:
+      - generic [ref=e39]: ⚔️上午 武侯祠（2小时）
+      - generic [ref=e40]: 必看：三绝碑（唐）、文臣武将廊、惠陵
+    - generic [ref=e41]: ↓
+    - generic [ref=e42]:
+      - generic [ref=e43]: ☯️中午 青羊宫（1小时）
+      - generic [ref=e44]: 必看：八卦亭无梁结构、独角铜羊
+    - generic [ref=e45]: ↓
+    - generic [ref=e46]:
+      - generic [ref=e47]: 🙏下午 文殊院+永陵博物馆（各1小时）
+      - generic [ref=e48]: 必看：川西佛教建筑 / 二十四伎乐浮雕
+  - generic [ref=e49]:
+    - generic [ref=e50]:
+      - text: 路线四：都江堰+青城山
+      - generic [ref=e51]: 1天
+    - generic [ref=e52]:
+      - generic [ref=e53]: 🌊上午 都江堰（3-4小时）
+      - generic [ref=e54]: 路线：鱼嘴→飞沙堰→宝瓶口→伏龙观→安澜索桥→二王庙
+      - generic [ref=e55]: 必看：鱼嘴分水原理、汉代李冰石像、治水碑刻
+    - generic [ref=e56]: ↓
+    - generic [ref=e57]:
+      - generic [ref=e58]: ⛰️下午 青城山前山（3-4小时）
+      - generic [ref=e59]: 路线：建福宫→天师洞→上清宫
+      - generic [ref=e60]: 必看：天师洞1800年银杏、唐代石刻
+      - generic [ref=e61]: 高铁30分钟可达，建议先都江堰后青城山
+  - generic [ref=e62]:
+    - generic [ref=e63]:
+      - text: 路线五：宝光寺专程
+      - generic [ref=e64]: 半天
+    - generic [ref=e65]:
+      - generic [ref=e66]: 🏯宝光寺（新都区，2-3小时）
+      - generic [ref=e67]: 必看：舍利塔"前塔后殿"古制、罗汉堂577尊塑像
+      - generic [ref=e68]: 地铁可达
+  - generic [ref=e70]:
+    - generic [ref=e71]: • 三星堆需提前预约
+    - generic [ref=e72]: • 博物馆周一多闭馆
+    - generic [ref=e73]: • 都江堰/青城山穿舒适鞋

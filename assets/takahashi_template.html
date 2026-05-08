@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#F7F3E9}
+body{font-family:"PingFang SC","Heiti SC","STHeiti",-apple-system,sans-serif;display:flex;align-items:center;justify-content:center}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:5vw;opacity:0;pointer-events:none;transition:none}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-text{color:#1A1A1A;font-weight:900;text-align:center;line-height:1.15;word-break:break-all}
+.slide.emphasis .slide-text{color:#C03C28}
+.page-num{position:fixed;left:18px;bottom:14px;font-size:13px;color:#bbb;font-weight:400;z-index:10}
+</style>
+</head>
+<body>
+<div class="page-num" id="pn"></div>
+<script>
+const slides = {{SLIDES_JSON}};
+let cur = 0;
+const container = document.body;
+
+slides.forEach((s, i) => {
+  const div = document.createElement('div');
+  div.className = 'slide' + (s.emphasis ? ' emphasis' : '');
+  const span = document.createElement('span');
+  span.className = 'slide-text';
+  span.textContent = s.text;
+  div.appendChild(span);
+  container.appendChild(div);
+});
+
+function fitText(el) {
+  const len = el.textContent.length;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const base = Math.min(vw, vh);
+  let size;
+  if (len <= 1) size = base * 0.45;
+  else if (len <= 2) size = base * 0.38;
+  else if (len <= 4) size = base * 0.28;
+  else if (len <= 6) size = base * 0.2;
+  else if (len <= 8) size = base * 0.16;
+  else if (len <= 12) size = base * 0.12;
+  else size = base * 0.09;
+  el.style.fontSize = size + 'px';
+}
+
+function show(n) {
+  cur = Math.max(0, Math.min(n, slides.length - 1));
+  document.querySelectorAll('.slide').forEach((d, i) => {
+    d.classList.toggle('active', i === cur);
+    if (i === cur) fitText(d.querySelector('.slide-text'));
+  });
+  document.getElementById('pn').textContent = (cur + 1) + ' / ' + slides.length;
+}
+
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.slide.active .slide-text');
+  if (active) fitText(active);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); show(cur + 1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); show(cur - 1); }
+  else if (e.key === 'Home') { e.preventDefault(); show(0); }
+  else if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+  else if (e.key === 'f') { document.documentElement.requestFullscreen?.(); }
+});
+
+container.addEventListener('click', () => show(cur + 1));
+show(0);
+</script>
+</body>
+</html>
