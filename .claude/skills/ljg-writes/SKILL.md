@@ -13,30 +13,27 @@ version: "6.3.0"
 
 ## 约束
 
-### Org-mode 语法
+### Markdown 语法
 
-- 加粗用 `*bold*`（单星号），禁止 `**bold**`
-- 标题层级从 `*` 开始，不跳级
+- 加粗用 `**bold**`
+- 标题层级从 `#` 开始，不跳级
 
 ### ASCII Art
 
 所有图表用纯 ASCII 字符。允许：`+ - | / \ > < v ^ * = ~ . : # [ ] ( ) _ , ; ! ' "` 和空格。禁止 Unicode 绘图符号。
 
-### Denote 文件规范
+### 文件规范
 
-- 时间戳：`date +%Y%m%dT%H%M%S`
-- 可读时间：`date "+%Y-%m-%d %a %H:%M"`
-- 文件名：`{时间戳}==z--{标题关键词}__write.org`
-- 输出目录：`~/Documents/notes/`
+- 时间戳：`date "+%Y-%m-%d"`
+- 文件名：`{标题关键词}.md`
+- 输出目录：`docs/`（项目根目录下）
 
-### Org 文件头
+### Markdown 文件头
 
-```
-#+title:      {标题}
-#+date:       [{YYYY-MM-DD Day HH:MM}]
-#+filetags:   :write:
-#+identifier: {YYYYMMDDTHHMMSS}
-#+author:     李继刚
+```markdown
+# {标题}
+
+> {YYYY-MM-DD} | 李继刚
 ```
 
 ## 姿态
@@ -154,7 +151,7 @@ version: "6.3.0"
 ## 输出
 
 1. 初稿 + 中文重写，两稿择优
-2. `date +%Y%m%dT%H%M%S` 和 `date "+%Y-%m-%d %a %H:%M"` 获取时间戳
+2. `date "+%Y-%m-%d"` 获取日期
 3. 从观点中提取关键词作为标题
-4. 写入 `~/Documents/notes/{时间戳}==z--{标题关键词}__write.org`
+4. 写入 `docs/{标题关键词}.md`（项目根目录下）
 5. 报告路径
