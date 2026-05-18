@@ -33,10 +33,31 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 3. 如用户指定方向则聚焦筛选，否则综合推荐
 4. 生成 5 个选题，每个包含：
 
-**抓取策略（每个 SubAgent 内部执行）：**
-1. 先用 WebFetch 抓取目标 URL，提取标题列表
-2. 若 WebFetch 无效或返回空 → 降级 agent-browser（navigate + snapshot）
-3. 均失败 → 返回空结果，由主流程基于已有知识补充，标注"未获取实时数据"
+**抓取策略（每个 SubAgent 必须严格执行，不可跳过任何步骤）：**
+
+> ⚠️ 硬性规则：WebFetch 失败后 MUST 调用 agent-browser 技能降级抓取，禁止直接返回空结果。
+
+1. **第一步：WebFetch** — 用 WebFetch 抓取目标 URL，提取标题列表
+2. **第二步：降级 agent-browser（必须执行）** — 若 WebFetch 返回错误、空内容、或无法提取有效标题 → **必须**使用 Skill tool 调用 `agent-browser` 技能，执行以下操作：
+   - navigate 到目标 URL
+   - 等待页面加载完成
+   - snapshot 获取页面内容
+   - 从 snapshot 中提取标题列表
+3. **第三步：均失败** — 仅当 WebFetch 和 agent-browser 都失败后，才返回空结果
+
+**给 SubAgent 的 prompt 必须包含以下完整指令（直接复制）：**
+
+```
+你的任务是抓取 {URL} 的热门标题 5-10 条。严格按以下步骤执行：
+
+步骤1：用 WebFetch 工具抓取 {URL}，提取文章标题列表。
+
+步骤2：如果步骤1失败（报错、返回空、无法提取标题），你必须使用 Skill 工具调用 agent-browser 技能，然后用 agent-browser 提供的浏览器自动化能力访问该页面并提取标题。不可跳过此步骤。
+
+步骤3：仅当步骤1和步骤2都失败时，返回"抓取失败"。
+
+输出格式：每行一个标题，编号列出。
+```
 
 ```
 1. [标题]
@@ -59,7 +80,7 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 ### 写作流程
 
 1. **定结构**：用3句话概括——核心论点是什么、用什么论据支撑、结尾走向哪里
-2. **搜素材**：用 WebFetch 搜集数据/案例（不可用时降级 agent-browser），确保每个论据有具体支撑
+2. **搜素材**：用 WebFetch 搜集数据/案例；若 WebFetch 失败，**必须**调用 Skill tool 触发 `agent-browser` 技能降级抓取，不可跳过。确保每个论据有具体支撑
 3. **写初稿**：按"亮刀→论据推进→反转/留问"结构完成
 4. **口语化检验**：逐句默读，拗口的改顺
 5. **删废话**：每句话必须推进论点，删掉不影响理解的句子
@@ -93,23 +114,48 @@ summary: 50字以内摘要
 
 ## Step 3：配图
 
-复用 ljg-card 技能生成配图。
+自主生成公众号专属配图，无需依赖外部技能。
 
-| 用途 | 调用方式 | 规格 |
-|------|----------|------|
-| 封面图 | ljg-card `-b` 大字模式 | 标题+核心论点，碑刻风格，1080x1440 |
-| 文中数据图 | ljg-card `-i` 信息图模式 | 将关键数据/对比可视化 |
+| 用途 | 模板 | 规格 |
+|------|------|------|
+| 封面图 | `assets/cover_template.html` | 1080×608（16:9，公众号封面规范） |
+| 数据图 | `assets/data_template.html` | 1080宽，高度自适应（fullpage截图） |
 
-### 流程
+### 封面图流程
 
-1. 从文章提取封面标题（可以是文章标题的抓眼球变体）
-2. 提取文中适合可视化的数据点（如果有）
-3. 调用 ljg-card 对应模式生成
+1. 从文章提取封面标题（可以是抓眼球的变体）和副标题
+2. Read `assets/cover_template.html`
+3. 填充占位符：
+   - `{{TITLE_HTML}}`：封面大标题（用 `<div class="title">` 包裹）
+   - `{{SUBTITLE}}`：副标题文字
+   - `{{CUSTOM_CSS}}`：可选的自定义样式覆盖（如调整配色、字号）
+4. Write 到 `/tmp/gzh_cover_{YYYY-MM-DD}.html`
+5. 截图：`node .claude/skills/gzh/assets/capture.js /tmp/gzh_cover_{YYYY-MM-DD}.html docs/pic/gzh-cover-{YYYY-MM-DD}.png 1080 608`
+
+### 数据图流程
+
+1. 从文章提取适合可视化的数据/对比/流程
+2. Read `assets/data_template.html`
+3. 根据内容从零设计 CSS+HTML，填充：
+   - `{{CUSTOM_CSS}}`：完整的自定义样式（布局、配色、排版）
+   - `{{CONTENT_HTML}}`：数据可视化内容（图表、对比卡片、流程图等）
+4. Write 到 `/tmp/gzh_data_{YYYY-MM-DD}.html`
+5. 截图：`node .claude/skills/gzh/assets/capture.js /tmp/gzh_data_{YYYY-MM-DD}.html docs/pic/gzh-data-{YYYY-MM-DD}-{n}.png 1080 800 fullpage`
+
+### 配图设计原则
+
+- 封面图：深色背景 + 大标题，简洁有力，远看能识别文字
+- 数据图：浅色背景，商业质感，信息清晰，无多余装饰元素
+- 两者都保留噪点纹理增加质感，但不添加署名、编码等无关元素
 
 ### 输出
 
 - 封面：`docs/pic/gzh-cover-{YYYY-MM-DD}.png`
 - 数据图：`docs/pic/gzh-data-{YYYY-MM-DD}-{n}.png`
+
+### 前置条件
+
+首次使用需安装依赖：`cd .claude/skills/gzh && npm install && npx playwright install chromium`
 
 ---
 
