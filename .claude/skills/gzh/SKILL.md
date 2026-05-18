@@ -161,13 +161,17 @@ summary: 50字以内摘要
 
 ## Step 4：发布
 
-输出最终发布清单：
+通过微信公众平台 API 将文章存入草稿箱（不会直接发布）。
+
+### 发布流程
+
+1. **展示发布清单**（等待用户确认）：
 
 ```
 ## 发布清单
 
-### 文章
-[完整 Markdown 正文]
+### 文章标题
+xxx
 
 ### 封面图
 路径：xxx
@@ -184,6 +188,34 @@ summary: 50字以内摘要
 - [ ] 文中配图位置合理
 - [ ] 摘要是否引发点击欲
 ```
+
+2. **用户确认后**，执行自动发布到草稿箱：
+
+```bash
+# Step 1: Markdown → 微信兼容 HTML
+node .claude/skills/gzh/scripts/md2wx.js docs/gzh/{文章}.md /tmp/gzh_wx_{date}.html --image docs/pic/gzh-data-{date}-1.png:{段落位置}
+
+# Step 2: 上传素材 + 创建草稿
+node .claude/skills/gzh/scripts/publish.js \
+  --title "文章标题" \
+  --content /tmp/gzh_wx_{date}.html \
+  --cover docs/pic/gzh-cover-{date}.png \
+  --summary "50字摘要"
+```
+
+3. **输出结果**：草稿 media_id，提示用户登录 mp.weixin.qq.com 查看草稿箱
+
+### 配置前置条件
+
+凭证存储在 `~/.gzh-config.json`（本地文件，不进代码仓库）：
+```json
+{
+  "appId": "你的appId",
+  "appSecret": "你的appSecret"
+}
+```
+
+需要在微信公众平台后台 → 设置与开发 → 基本配置 → IP白名单中添加本机 IP。
 
 ---
 
