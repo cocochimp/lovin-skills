@@ -1,5 +1,5 @@
 {
-  "name": "gzh-skill",
+  "name": "gzh-writes",
   "private": true,
   "dependencies": {
     "playwright": "^1.60.0"

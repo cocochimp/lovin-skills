@@ -186,7 +186,7 @@ summary: 50字以内摘要
    - `{{SUBTITLE}}`：副标题文字
    - `{{CUSTOM_CSS}}`：可选的自定义样式覆盖（如调整配色、字号）
 4. Write 到 `/tmp/gzh_cover_{YYYY-MM-DD}.html`
-5. 截图：`node .claude/skills/gzh/assets/capture.js /tmp/gzh_cover_{YYYY-MM-DD}.html docs/pic/gzh-cover-{YYYY-MM-DD}.png 1080 608`
+5. 截图：`node .claude/skills/gzh-writes/assets/capture.js /tmp/gzh_cover_{YYYY-MM-DD}.html docs/pic/gzh-cover-{YYYY-MM-DD}.png 1080 608`
 
 ### 数据图流程
 
@@ -196,7 +196,7 @@ summary: 50字以内摘要
    - `{{CUSTOM_CSS}}`：完整的自定义样式（布局、配色、排版）
    - `{{CONTENT_HTML}}`：数据可视化内容（图表、对比卡片、流程图等）
 4. Write 到 `/tmp/gzh_data_{YYYY-MM-DD}.html`
-5. 截图：`node .claude/skills/gzh/assets/capture.js /tmp/gzh_data_{YYYY-MM-DD}.html docs/pic/gzh-data-{YYYY-MM-DD}-{n}.png 1080 800 fullpage`
+5. 截图：`node .claude/skills/gzh-writes/assets/capture.js /tmp/gzh_data_{YYYY-MM-DD}.html docs/pic/gzh-data-{YYYY-MM-DD}-{n}.png 1080 800 fullpage`
 
 ### 配图设计原则
 
@@ -249,10 +249,10 @@ xxx
 
 ```bash
 # Step 1: Markdown → 微信兼容 HTML
-node .claude/skills/gzh/scripts/md2wx.js docs/gzh/{文章}.md /tmp/gzh_wx_{date}.html --image docs/pic/gzh-data-{date}-1.png:{段落位置}
+node .claude/skills/gzh-writes/scripts/md2wx.js docs/gzh/{文章}.md /tmp/gzh_wx_{date}.html --image docs/pic/gzh-data-{date}-1.png:{段落位置}
 
 # Step 2: 上传素材 + 创建草稿
-node .claude/skills/gzh/scripts/publish.js \
+node .claude/skills/gzh-writes/scripts/publish.js \
   --title "文章标题" \
   --content /tmp/gzh_wx_{date}.html \
   --cover docs/pic/gzh-cover-{date}.png \
