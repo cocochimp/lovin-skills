@@ -137,7 +137,7 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 
 1. **定结构**：用3句话概括——核心论点是什么、用什么论据支撑、结尾走向哪里
 2. **搜素材**：用 WebFetch 搜集数据/案例；若 WebFetch 失败，**必须**调用 Skill tool 触发 `agent-browser` 技能降级抓取，不可跳过。确保每个论据有具体支撑
-3. **写初稿**：按"论题→论据推进→反转/留问"结构完成
+3. **写初稿**：按"亮刀→论据推进→反转/留问"结构完成
 4. **口语化检验**：逐句默读，拗口的改顺
 5. **删废话**：每句话必须推进论点，删掉不影响理解的句子
 6. **字数检查**：确认700-900字范围内
@@ -186,8 +186,8 @@ summary: 50字以内摘要
    - `{{TITLE_HTML}}`：封面大标题（用 `<div class="title">` 包裹）
    - `{{SUBTITLE}}`：副标题文字
    - `{{CUSTOM_CSS}}`：可选的自定义样式覆盖（如调整配色、字号）
-4. Write 到 `/tmp/gzh_cover_{YYYY-MM-DD}.html`
-5. 截图：`node .claude/skills/gzh-writes/assets/capture.js /tmp/gzh_cover_{YYYY-MM-DD}.html docs/pic/gzh-cover-{YYYY-MM-DD}.png 1080 608`
+4. Write 到 `/tmp/gzh_cover_{YYYY-MM-DD}-{关键词}.html`
+5. 截图：`node .claude/skills/gzh-writes/assets/capture.js /tmp/gzh_cover_{YYYY-MM-DD}-{关键词}.html docs/pic/gzh-cover-{YYYY-MM-DD}-{关键词}.png 1080 608`
 
 ### 数据图流程
 
@@ -196,8 +196,8 @@ summary: 50字以内摘要
 3. 根据内容从零设计 CSS+HTML，填充：
    - `{{CUSTOM_CSS}}`：完整的自定义样式（布局、配色、排版）
    - `{{CONTENT_HTML}}`：数据可视化内容（图表、对比卡片、流程图等）
-4. Write 到 `/tmp/gzh_data_{YYYY-MM-DD}.html`
-5. 截图：`node .claude/skills/gzh-writes/assets/capture.js /tmp/gzh_data_{YYYY-MM-DD}.html docs/pic/gzh-data-{YYYY-MM-DD}-{n}.png 1080 800 fullpage`
+4. Write 到 `/tmp/gzh_data_{YYYY-MM-DD}-{关键词}.html`
+5. 截图：`node .claude/skills/gzh-writes/assets/capture.js /tmp/gzh_data_{YYYY-MM-DD}-{关键词}.html docs/pic/gzh-data-{YYYY-MM-DD}-{关键词}-{n}.png 1080 800 fullpage`
 
 ### 配图设计原则
 
@@ -207,8 +207,8 @@ summary: 50字以内摘要
 
 ### 输出
 
-- 封面：`docs/pic/gzh-cover-{YYYY-MM-DD}.png`
-- 数据图：`docs/pic/gzh-data-{YYYY-MM-DD}-{n}.png`
+- 封面：`docs/pic/gzh-cover-{YYYY-MM-DD}-{关键词}.png`
+- 数据图：`docs/pic/gzh-data-{YYYY-MM-DD}-{关键词}-{n}.png`
 
 ### 前置条件
 
