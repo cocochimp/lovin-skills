@@ -98,10 +98,16 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 步骤1：用 WebSearch 搜索"{用户传入主题}"，获取最新的 5-10 条相关结果。
 
 步骤2：对搜索结果中最相关的 3-5 条，用 WebFetch 获取详细内容摘要。
+- 如果 WebFetch 全部失败，改用 Skill 工具调用 agent-browser 技能，用浏览器自动化访问这些 URL 并提取内容摘要。
+- 如果 WebFetch 成功，在输出末尾附加：CHANNEL=webfetch
+- 如果 WebFetch 失败但 agent-browser 成功，在输出末尾附加：CHANNEL=browser
+- 如果都失败，在输出末尾附加：CHANNEL=failed
 
 输出格式：
 1. 标题 | 链接URL | 一句话摘要
 2. 标题 | 链接URL | 一句话摘要
+
+最后一行必须是 CHANNEL=webfetch 或 CHANNEL=browser 或 CHANNEL=failed
 ```
 
 ---
@@ -222,7 +228,7 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 1. **定结构**：
    - 主观模式：用3句话概括——核心论点是什么、用什么论据支撑、结尾走向哪里
    - 客观模式：用3句话概括——核心事实是什么、补充哪些信息、延伸什么方向
-2. **搜素材**：用 WebFetch 搜集数据/案例；若 WebFetch 失败，**必须**调用 Skill tool 触发 `agent-browser` 技能降级抓取，不可跳过。确保每个论据有具体支撑
+2. **搜素材**：复用 Step 1 确定的网络通道搜集数据/案例。如果 Step 1 通道为 `webfetch`，直接用 WebFetch；如果为 `browser`，直接用 Skill tool 调用 `agent-browser` 技能。不再重复探测。确保每个论据有具体支撑
 3. **写初稿**：按所选维度的结构完成
 4. **口语化检验**：逐句默读，拗口的改顺
 5. **删废话**：每句话必须推进论点/信息，删掉不影响理解的句子
