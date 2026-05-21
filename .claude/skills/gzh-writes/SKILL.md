@@ -74,10 +74,11 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 | 界面新闻 | https://www.jiemian.com | 时政/财经 |
 
 **流程：**
-1. 并行启动 5 个 SubAgent（Agent tool, subagent_type=general-purpose），每个负责一个渠道抓取 3-5 条标题
-2. 汇总所有素材，按用户选择的方向聚焦筛选（选了"推荐"则综合推荐）
-3. 内部保留全部素材供"更换"使用
-4. 生成 5 条选题
+1. **探测阶段**：启动 1 个 SubAgent（Agent tool, subagent_type=general-purpose），对第 1 个渠道（36氪）执行探测抓取（见下方探测 prompt），确定可用通道
+2. **批量抓取**：通道确定后，并行启动剩余 4 个 SubAgent，每个使用已确定的通道抓取对应渠道（见下方批量抓取 prompt）
+3. 汇总所有素材（含探测 SubAgent 的结果），按用户选择的方向聚焦筛选（选了"推荐"则综合推荐）
+4. 内部保留全部素材供"更换"使用
+5. 生成 5 条选题
 
 ---
 
@@ -105,33 +106,68 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 
 ---
 
-### 渠道抓取策略（模式 A 专用，每个 SubAgent 必须严格执行）
+### 渠道抓取策略（模式 A 专用）
 
-> ⚠️ 硬性规则：WebFetch 失败后 MUST 调用 agent-browser 技能降级抓取，禁止直接返回空结果。
+> ⚠️ 硬性规则：遵循「网络通道探测规则」，先探测再批量，不允许 5 个 SubAgent 同时盲启。
 
-1. **第一步：WebFetch** — 用 WebFetch 抓取目标 URL，提取标题列表
-2. **第二步：降级 agent-browser（必须执行）** — 若 WebFetch 返回错误、空内容、或无法提取有效标题 → **必须**使用 Skill tool 调用 `agent-browser` 技能，执行以下操作：
-   - navigate 到目标 URL
-   - 等待页面加载完成
-   - snapshot 获取页面内容
-   - 从 snapshot 中提取标题列表
-3. **第三步：均失败** — 仅当 WebFetch 和 agent-browser 都失败后，才返回空结果
+#### 探测 SubAgent prompt（第 1 个渠道，发给探测 SubAgent）：
 
-**给 SubAgent 的 prompt 必须包含以下完整指令（直接复制）：**
-
-```
-你的任务是抓取 {URL} 的热门标题 3-5 条。严格按以下步骤执行：
+~~~
+你的任务是抓取 {URL} 的热门标题 3-5 条，同时帮我确定网络通道。
 
 步骤1：用 WebFetch 工具抓取 {URL}，提取文章标题列表。
+- 如果成功，在输出末尾附加一行：CHANNEL=webfetch
 
-步骤2：如果步骤1失败（报错、返回空、无法提取标题），你必须使用 Skill 工具调用 agent-browser 技能，然后用 agent-browser 提供的浏览器自动化能力访问该页面并提取标题。不可跳过此步骤。
+步骤2：如果步骤1失败（报错、返回空、无法提取标题），你必须使用 Skill 工具调用 agent-browser 技能，然后用 agent-browser 提供的浏览器自动化能力访问该页面并提取标题。
+- 如果成功，在输出末尾附加一行：CHANNEL=browser
 
-步骤3：仅当步骤1和步骤2都失败时，返回"抓取失败"。
+步骤3：如果步骤1和步骤2都失败，输出：CHANNEL=failed
 
 输出格式：每行一个标题，编号列出，每条附带文章链接（如能获取）。格式如下：
 1. 标题文字 | 链接URL
 2. 标题文字 | 链接URL
-```
+
+最后一行必须是 CHANNEL=webfetch 或 CHANNEL=browser 或 CHANNEL=failed
+~~~
+
+#### 批量抓取 SubAgent prompt（剩余 4 个渠道，通道已确定）：
+
+**当 channel = webfetch 时：**
+
+~~~
+你的任务是抓取 {URL} 的热门标题 3-5 条。
+
+用 WebFetch 工具抓取 {URL}，提取文章标题列表。如果失败，返回"抓取失败"。
+
+输出格式：每行一个标题，编号列出，每条附带文章链接（如能获取）。格式如下：
+1. 标题文字 | 链接URL
+2. 标题文字 | 链接URL
+~~~
+
+**当 channel = browser 时：**
+
+~~~
+你的任务是抓取 {URL} 的热门标题 3-5 条。
+
+使用 Skill 工具调用 agent-browser 技能，然后用 agent-browser 提供的浏览器自动化能力：
+1. navigate 到 {URL}
+2. 等待页面加载完成
+3. snapshot 获取页面内容
+4. 从 snapshot 中提取标题列表
+
+如果失败，返回"抓取失败"。
+
+输出格式：每行一个标题，编号列出，每条附带文章链接（如能获取）。格式如下：
+1. 标题文字 | 链接URL
+2. 标题文字 | 链接URL
+~~~
+
+#### 通道判断逻辑
+
+主流程解析探测 SubAgent 返回结果中的 `CHANNEL=xxx` 行：
+- `CHANNEL=webfetch` → 剩余 4 个 SubAgent 使用 webfetch prompt
+- `CHANNEL=browser` → 剩余 4 个 SubAgent 使用 browser prompt
+- `CHANNEL=failed` → 提示用户"网络不可用，请检查网络后重试"，终止流程
 
 **选题展示格式：**
 
