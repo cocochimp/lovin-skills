@@ -17,12 +17,16 @@ async function main() {
   }
 
   const resolvedHtml = path.resolve(htmlPath);
+  const outputDir = path.dirname(path.resolve(outputPath));
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
 
   let chromium;
   try {
     chromium = require('playwright').chromium;
   } catch {
-    console.error('Playwright not found. Run: cd .claude/skills/gzh && npm install && npx playwright install chromium');
+    console.error('Playwright not found. Run: cd .claude/skills/gzh-writes && npm install && npx playwright install chromium');
     process.exit(1);
   }
 
@@ -32,12 +36,10 @@ async function main() {
 
   const fileUrl = 'file://' + resolvedHtml;
   await page.goto(fileUrl, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(500);
 
   if (fullpage) {
     const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
     await page.setViewportSize({ width, height: bodyHeight });
-    await page.waitForTimeout(300);
     await page.screenshot({
       path: path.resolve(outputPath),
       type: 'png',

@@ -175,9 +175,11 @@ async function main() {
       localImages.push(src);
     }
   }
+  const contentDir = path.dirname(path.resolve(params.content));
   for (const imgPath of localImages) {
-    console.log(`正在上传正文图片: ${imgPath}...`);
-    const wxUrl = await uploadContentImage(token, path.resolve(imgPath));
+    const resolvedImg = path.isAbsolute(imgPath) ? imgPath : path.resolve(contentDir, imgPath);
+    console.log(`正在上传正文图片: ${resolvedImg}...`);
+    const wxUrl = await uploadContentImage(token, resolvedImg);
     content = content.replace(imgPath, wxUrl);
   }
 
