@@ -14,6 +14,29 @@ description: 公众号自媒体内容生产全流程。触发词："公众号"�
 
 ---
 
+## 网络通道探测规则
+
+所有需要网络抓取的环节（Step 1 选题抓取、Step 2 素材搜索），都遵循以下探测优先策略：
+
+### 探测流程
+
+1. **探测阶段**：先启动 1 个 SubAgent，对第一个目标尝试 WebFetch（或 WebSearch）
+   - 成功 → 确定通道为 `webfetch`
+   - 失败 → 同一 SubAgent 改用 Skill tool 调用 `agent-browser` 技能重试
+     - 成功 → 确定通道为 `browser`
+     - 也失败 → 提示用户"网络不可用，请检查网络后重试"，终止流程
+2. **批量阶段**：通道确定后，剩余 SubAgent 并行启动，全部使用已确定的通道，不再各自降级
+3. **通道复用**：Step 1 确定的通道结论在 Step 2 素材搜索时直接复用，不再重复探测
+
+### 通道类型说明
+
+| 通道 | 含义 | SubAgent 内使用的工具 |
+|------|------|----------------------|
+| `webfetch` | WebFetch/WebSearch 可用 | 使用 WebFetch 或 WebSearch 获取内容 |
+| `browser` | 需要浏览器降级 | 使用 Skill tool 调用 `agent-browser` 技能获取内容 |
+
+---
+
 ## 交互入口
 
 **1、无参数（`/gzh-writes`）：**
