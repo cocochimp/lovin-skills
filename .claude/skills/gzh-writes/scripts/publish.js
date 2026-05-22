@@ -2,8 +2,8 @@
 
 /**
  * 微信公众号草稿发布脚本
- * 用法：node publish.js --title "标题" --content article.html --cover cover.png --summary "摘要"
- * 配置：~/.gzh-config.json { appId, appSecret }
+ * 用法：node publish.js --title "标题" --content article.html --cover cover.png --summary "摘要" [--author "作者"] [--comment 1]
+ * 配置：~/.gzh-config.json { appId, appSecret, author? }
  */
 
 const fs = require('fs');
@@ -15,10 +15,36 @@ const CONFIG_PATH = path.join(require('os').homedir(), '.gzh-config.json');
 function loadConfig() {
   if (!fs.existsSync(CONFIG_PATH)) {
     console.error(`配置文件不存在: ${CONFIG_PATH}`);
-    console.error('请创建配置文件: {"appId":"xxx","appSecret":"xxx"}');
+    console.error('请创建配置文件 ~/.gzh-config.json，内容如下：');
+    console.error(JSON.stringify({
+      appId: '你的appId',
+      appSecret: '你的appSecret',
+      author: '你的署名',
+      original: 1,
+      reprint: 1,
+      comment: 1,
+      comment_audience: 'all',
+      auto_select_comment: 1
+    }, null, 2));
+    console.error('\n字段说明：');
+    console.error('  appId/appSecret  — 公众号开发者凭证（必填）');
+    console.error('  author           — 默认作者署名');
+    console.error('  original         — 声明原创 (1=文字原创, 0=无需声明)');
+    console.error('  reprint          — 快捷转载 (1=允许所有账号转载, 0=关闭)');
+    console.error('  comment          — 开启留言 (1=开启, 0=关闭)');
+    console.error('  comment_audience  — 谁可以留言 (all=所有人, fans=已关注, fans7=关注7天以上)');
+    console.error('  auto_select_comment — 自动精选留言 (1=开启, 0=关闭)');
     process.exit(1);
   }
-  return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+  const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+  if (!config.appId || !config.appSecret) {
+    console.error('配置文件缺少 appId 或 appSecret');
+    process.exit(1);
+  }
+  if (!config.author) {
+    console.warn('提示：~/.gzh-config.json 中未设置 author（作者署名），建议补充');
+  }
+  return config;
 }
 
 function parseArgs() {
@@ -29,7 +55,10 @@ function parseArgs() {
     params[key] = args[i + 1];
   }
   if (!params.title || !params.content || !params.cover) {
-    console.error('用法: node publish.js --title "标题" --content article.html --cover cover.png --summary "摘要"');
+    console.error('用法: node publish.js --title "标题" --content article.html --cover cover.png --summary "摘要" [--author "作者"] [--comment 1]');
+    console.error('可选参数:');
+    console.error('  --author "作者名"   作者署名（也可在 ~/.gzh-config.json 中设置 author 字段）');
+    console.error('  --comment 1|0      是否开启留言（默认 1）');
     process.exit(1);
   }
   return params;
@@ -183,19 +212,35 @@ async function main() {
     content = content.replace(imgPath, wxUrl);
   }
 
+  const author = params.author || config.author || '';
+  const needComment = (params.comment !== undefined ? params.comment : String(config.comment ?? 1)) !== '0';
+  const onlyFans = config.comment_audience === 'fans' ? 1 : config.comment_audience === 'fans7' ? 2 : 0;
+
   console.log('正在创建草稿...');
   const draftId = await createDraft(token, {
     title: params.title,
+    author: author,
     thumb_media_id: thumbMediaId,
     content: content,
     digest: params.summary || '',
     content_source_url: '',
-    need_open_comment: 0
+    need_open_comment: needComment ? 1 : 0,
+    only_fans_can_comment: onlyFans
   });
 
   console.log(`\n草稿创建成功！`);
   console.log(`草稿 media_id: ${draftId}`);
-  console.log('请登录 mp.weixin.qq.com 查看草稿箱');
+  console.log(`作者署名: ${author || '(未设置)'}`);
+  console.log(`声明原创: ${config.original ? '文字原创' : '无需声明'}（需后台确认）`);
+  console.log(`快捷转载: ${config.reprint ? '已开启' : '未开启'}（需后台确认）`);
+  console.log(`留言功能: ${needComment ? '已开启' : '未开启'}`);
+  if (needComment) {
+    const audienceMap = { all: '所有人', fans: '已关注的人', fans7: '已关注7天及以上的人' };
+    console.log(`留言范围: ${audienceMap[config.comment_audience] || '所有人'}`);
+    console.log(`自动精选: ${config.auto_select_comment ? '已开启' : '未开启'}（需后台确认）`);
+  }
+  console.log('\n提示：原创声明、快捷转载、自动精选留言需登录 mp.weixin.qq.com → 草稿箱 → 手动设置');
+  console.log('如需群发通知或定时发布，也请在后台操作。');
 }
 
 main().catch(err => {
