@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "remote-work",
+  "prompt": "帮我写一篇文章，观点：远程办公比坐班更高效",
+  "assertions": [
+    {"id": "word-count", "text": "文章字数在1000-1500之间"},
+    {"id": "no-ai-cliches", "text": "没有AI拐杖词"},
+    {"id": "header-format", "text": "文件头包含标题和日期+作者信息"},
+    {"id": "no-listicle", "text": "文章不是要点罗列式"},
+    {"id": "no-depth-announce", "text": "不自标深度"}
+  ]
+}

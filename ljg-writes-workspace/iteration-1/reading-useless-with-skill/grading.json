@@ -1,0 +1,33 @@
+{
+  "eval_id": 2,
+  "eval_name": "reading-useless-with_skill",
+  "file": "/Users/lovin/Desktop/AgentTest/lovin-skills/ljg-writes-workspace/iteration-1/reading-useless-with-skill/outputs/读书无用论.md",
+  "word_count": 900,
+  "expectations": [
+    {
+      "text": "文章字数在1000-1500之间",
+      "passed": false,
+      "evidence": "字数: 900"
+    },
+    {
+      "text": "没有AI拐杖词",
+      "passed": true,
+      "evidence": "未发现AI拐杖词"
+    },
+    {
+      "text": "文件头包含标题和日期+作者信息",
+      "passed": true,
+      "evidence": "标题: 有, 日期+作者: 有"
+    },
+    {
+      "text": "文章不是要点罗列式",
+      "passed": true,
+      "evidence": "列表行占比: 0.0% (0行), 低于15%视为通过"
+    },
+    {
+      "text": "不自标深度（禁用'再深入一层'等宣告）",
+      "passed": true,
+      "evidence": "未发现深度宣告"
+    }
+  ]
+}
