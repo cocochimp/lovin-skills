@@ -20,33 +20,31 @@ description: "Use when the user says /gzh-review or asks to review WeChat public
 
 #### 1.1 打开登录页
 
-调用 agent-browser 打开 `https://mp.weixin.qq.com`，截图展示二维码，提示用户：
+调用 agent-browser 以 **--headed 模式**打开 `https://mp.weixin.qq.com`（mp.weixin.qq.com 会检测 headless 浏览器，headless 会被重定向拦截），截图展示二维码，提示用户：
 
 > "请用微信扫码登录公众号后台，登录完成后告诉我。"
 
-**等待用户确认已登录**，然后截图确认已进入后台主页。
+**等待用户确认已登录**，然后用 snapshot 确认已进入后台主页。
 
 #### 1.2 导航到内容分析
 
-依次操作：
-1. 点击左侧菜单「统计」或「数据分析」
-2. 点击「内容分析」子菜单
-3. 等待页面加载完成，截图确认到达正确页面
+登录确认后，直接 goto `https://mp.weixin.qq.com/#/datacube/content` 跳转到内容分析页。
 
-如果页面结构有变化，根据截图内容自适应导航。
+用 snapshot 确认到达正确页面。如果 URL 失效（页面空白或重定向），降级为菜单导航：点击左侧「统计」→「内容分析」。
 
 #### 1.3 提取表格数据
 
-从内容分析页面的文章列表表格中提取每篇文章的数据：
-- **标题**
-- **发布日期**
-- **阅读量**
-- **分享次数**
-- **点赞次数**
-- **收藏次数**
-- **评论数**（如有）
+目标字段：标题、发布日期、阅读量、分享次数、点赞次数、收藏次数、评论数（如有）、完读率（如有）。
 
-如果表格有分页，翻页继续提取，直到覆盖目标时间范围。
+**优先路径 — 导出功能**：
+1. 先用 snapshot 检查页面是否有"导出数据"按钮
+2. 如果有，直接下载 CSV/Excel 并解析，跳过下面的手动提取
+
+**手动提取路径**：
+1. 用 `agent-browser eval` 注入 JS，从 DOM 批量提取列表页所有行数据（避免逐条 click+navigate）
+2. 用 snapshot 确认提取结果（比 screenshot 更快更可靠）
+3. 仅在需要完读率、阅读时长等**详情页独有数据**时，批量获取详情页 URL 后逐篇访问
+4. 如果表格有分页，翻页后**必须重新 snapshot** 刷新元素引用再提取
 
 将提取的数据整理为结构化格式，进入 Step 2。
 
@@ -121,3 +119,10 @@ description: "Use when the user says /gzh-review or asks to review WeChat public
 - 报告使用中文
 - 修改 gzh-writes 的文件前必须获得用户确认
 - 不要编造数据，如果某项数据缺失，标注"数据缺失"
+
+### agent-browser 使用规范
+
+- **必须使用 --headed 模式**：微信后台会拦截 headless 浏览器，导致重定向失败
+- **优先用 snapshot 提取数据**：比 screenshot 更快更可靠，仅在需要视觉确认时用 screenshot
+- **页面导航或滚动后，必须重新 snapshot**：刷新元素引用（@eN 会过期，直接用会报错）
+- **优先用 eval 注入 JS 批量提取数据**：避免逐条 click+navigate，大幅减少 token 消耗
