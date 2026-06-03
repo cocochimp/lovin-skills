@@ -18,7 +18,7 @@ function parseArgs() {
   for (let i = 2; i < args.length; i++) {
     if (args[i] === '--image' && args[i + 1]) {
       const [imgPath, position] = args[i + 1].split(':');
-      images.push({ path: imgPath, afterParagraph: parseInt(position) || 1 });
+      images.push({ path: path.resolve(imgPath), afterParagraph: parseInt(position) || 1 });
       i++;
     }
   }
