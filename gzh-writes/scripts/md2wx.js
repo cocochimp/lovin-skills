@@ -18,7 +18,7 @@ function parseArgs() {
   for (let i = 2; i < args.length; i++) {
     if (args[i] === '--image' && args[i + 1]) {
       const [imgPath, position] = args[i + 1].split(':');
-      images.push({ path: imgPath, afterParagraph: parseInt(position) || 1 });
+      images.push({ path: path.resolve(imgPath), afterParagraph: parseInt(position) || 1 });
       i++;
     }
   }
@@ -163,7 +163,7 @@ function mdToWxHtml(md, images) {
     // 加粗段落标题（整行加粗）
     if (/^\*\*(.+)\*\*$/.test(trimmed)) {
       const text = trimmed.replace(/^\*\*(.+)\*\*$/, '$1');
-      htmlBlocks.push(`<p style="font-weight:bold;font-size:18px;color:#2d2926;margin:24px 0 12px;line-height:1.6;">${text}</p>`);
+      htmlBlocks.push(`<p style="font-weight:bold;font-size:18px;color:#2d2926;text-align:center;margin:40px 0 16px;line-height:1.6;">${text}</p>`);
       paragraphCount++; maybeInsertImage(); i++; continue;
     }
 
