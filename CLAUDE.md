@@ -13,11 +13,9 @@
 
 ```
 lovin-skills/
-├── ddd-rules-generator/          # DDD 规则生成器（源文件）
 ├── gzh-review/                   # 公众号数据复盘（源文件）
 ├── gzh-writes/                   # 公众号写作（源文件）
 ├── skill-scenario-generator/     # Skill 场景生成器（源文件）
-├── yuque-weekly-report/          # 语雀周报生成器（源文件）
 ├── spec-skills/                  # Spec 工作流 skills（源文件）
 ├── .claude/skills/               # 符号链接 → 根目录（Claude Code 运行时加载）
 ├── docs/                         # 产出物（文章、图片等）
@@ -30,11 +28,9 @@ lovin-skills/
 
 ```bash
 cd .claude/skills
-ln -sf ../../ddd-rules-generator ddd-rules-generator
 ln -sf ../../gzh-review gzh-review
 ln -sf ../../gzh-writes gzh-writes
 ln -sf ../../skill-scenario-generator skill-scenario-generator
-ln -sf ../../yuque-weekly-report yuque-weekly-report
 ```
 
 > **注意**：`.claude/` 目录在 `.gitignore` 中被忽略，因此符号链接不会被 git 跟踪。克隆仓库后，Claude Code 会根据以上指令自动创建所需的符号链接。
@@ -43,12 +39,9 @@ ln -sf ../../yuque-weekly-report yuque-weekly-report
 
 | Skill | 触发词 | 简介 |
 |-------|--------|------|
-| `ddd-rules-generator` | "生成DDD规则"、"更新DDD规则"、"ddd rules"、"同步DDD规则" | 从语雀 DDD 文档中提炼 Claude Code Rules 编码规则 |
 | `gzh-review` | `/gzh-review`、公众号数据复盘 | 分析微信公众号文章数据，生成优化建议 |
 | `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号自媒体内容生产全流程：选题→写文→配图→发布 |
 | `skill-scenario-generator` | "Skill 使用案例"、"Skill 具体场景" | 为指定 Skill 生成 5 个可复制执行的玩法场景 |
-| `yuque-weekly-report` | "写周报"、"生成周报"、"本周总结"、"weekly report" | 根据语雀新增文档自动生成周报 |
-| `ljg-roundtable` | "圆桌讨论"、"圆桌"、"roundtable"、"辩论" | 多角色结构化辩论，由求真主持人引导讨论 |
 | `spec-skills/*` | spec 相关操作 | Spec 驱动开发工作流（coding、design、detail、explore、proposal、workflow） |
 
 ## 开发规范

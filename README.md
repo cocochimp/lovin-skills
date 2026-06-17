@@ -6,12 +6,9 @@ Claude Code agent skills 集合仓库。每个 skill 是独立的 prompt 驱动�
 
 | Skill | 触发词 | 功能说明 |
 |-------|--------|----------|
-| `ddd-rules-generator` | "生成DDD规则"、"更新DDD规则"、"ddd rules" | 从语雀 DDD 文档中提炼 Claude Code Rules 编码规则 |
 | `gzh-review` | `/gzh-review` | 分析微信公众号文章运营数据，生成优化建议 |
 | `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号内容生产全流程：选题→写作→配图→发布 |
 | `skill-scenario-generator` | "Skill 使用案例"、"具体场景" | 为任意 Skill 生成 5 个可直接复制执行的玩法场景 |
-| `yuque-weekly-report` | "写周报"、"生成周报"、"本周总结"、"weekly report" | 根据本周语雀新增文档自动生成周报 |
-| `ljg-roundtable` | "圆桌讨论"、"roundtable"、"辩论" | 多角色结构化辩论，求真主持人引导讨论 |
 | `spec-skills` | spec 相关操作 | Spec 驱动开发工作流（coding、design、detail、explore、proposal、workflow） |
 
 ## 使用方式
@@ -31,10 +28,6 @@ claude
 
 ```
 lovin-skills/
-├── ddd-rules-generator/          # DDD 规则生成器
-│   ├── SKILL.md                  # Skill 核心契约
-│   ├── references/               # 参考模板
-│   └── sources.yaml              # 语雀数据源配置
 ├── gzh-review/                   # 公众号数据复盘
 │   ├── SKILL.md
 │   └── templates/                # 报告模板
@@ -45,8 +38,6 @@ lovin-skills/
 │   ├── references/               # 样式指南、发布规范
 │   └── scripts/                  # 发布、格式转换脚本
 ├── skill-scenario-generator/     # Skill 场景生成器
-│   └── SKILL.md
-├── yuque-weekly-report/          # 语雀周报生成器
 │   └── SKILL.md
 ├── spec-skills/                  # Spec 工作流 skills
 │   ├── spec-coding/
