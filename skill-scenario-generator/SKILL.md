@@ -44,7 +44,7 @@ description: 用户提供若干个 Skill 名字或链接，为每个 Skill 生�
 - 贴近真实工作和生活场景，不要编造脱离实际的用法
 - 5 个场景尽量覆盖该 Skill 的不同能力维度，避免雷同
 - prompt 要足够具体，包含明确的输入、处理逻辑、输出格式和路径
-- 输出路径统一使用 `/Users/lovin/Desktop/output/` 作为默认目录（用户可自行替换）
+- 输出路径统一使用 `~/Desktop/output/` 作为默认目录（用户可自行替换）
 - 场景难度从简单到进阶递进
 
 场景多样性要求（每个 Skill 的 5 个场景应尽量覆盖以下维度）：
@@ -115,23 +115,23 @@ description: 用户提供若干个 Skill 名字或链接，为每个 Skill 生�
 
 **1. 小红书美食探店**
 
-/agent-browser 在小红书搜索"杭州银泰in77美食"，找到评价最高的10家餐厅，整理名称、人均价格、推荐菜、评分到 /Users/lovin/Desktop/output/in77_food.md，配上每家店的封面截图保存到同目录
+/agent-browser 在小红书搜索"杭州银泰in77美食"，找到评价最高的10家餐厅，整理名称、人均价格、推荐菜、评分到 ~/Desktop/output/in77_food.md，配上每家店的封面截图保存到同目录
 
 **2. 竞品官网功能对比**
 
-/agent-browser 分别打开 notion.so、飞书文档、语雀 的官网，截图首页，提取各自的核心功能卖点，整理成对比表格输出到 /Users/lovin/Desktop/output/doc_tools_compare.md
+/agent-browser 分别打开 notion.so、飞书文档、语雀 的官网，截图首页，提取各自的核心功能卖点，整理成对比表格输出到 ~/Desktop/output/doc_tools_compare.md
 
 **3. GitHub Trending 周报**
 
-/agent-browser 打开 GitHub Trending 页面，筛选 Java 语言、本周，抓取前20个项目的名称、star数、描述，输出到 /Users/lovin/Desktop/output/github_trending_java.md
+/agent-browser 打开 GitHub Trending 页面，筛选 Java 语言、本周，抓取前20个项目的名称、star数、描述，输出到 ~/Desktop/output/github_trending_java.md
 
 **4. 自动化冒烟测试**
 
-/agent-browser 打开我本地 localhost:7001 的应用，检查首页是否正常加载，截图保存，然后访问 /checkpreload.htm 验证返回 success，把测试结果写到 /Users/lovin/Desktop/output/smoke_test.md
+/agent-browser 打开我本地 localhost:7001 的应用，检查首页是否正常加载，截图保存，然后访问 /checkpreload.htm 验证返回 success，把测试结果写到 ~/Desktop/output/smoke_test.md
 
 **5. 电商比价助手**
 
-/agent-browser 分别在京东和淘宝搜索"索尼 WH-1000XM5"，抓取前5个商品的价格、店铺、销量，整理成对比表格输出到 /Users/lovin/Desktop/output/price_compare.md，并截图各商品页面
+/agent-browser 分别在京东和淘宝搜索"索尼 WH-1000XM5"，抓取前5个商品的价格、店铺、销量，整理成对比表格输出到 ~/Desktop/output/price_compare.md，并截图各商品页面
 
 ---
 
@@ -157,7 +157,7 @@ description: 用户提供若干个 Skill 名字或链接，为每个 Skill 生�
 
 **5. Git Commit 日报生成器**
 
-/claude-api 写一个 Shell + Python 脚本，读取当天的 git log，调用 Claude API 生成一份结构化的工作日报（做了什么、改了哪些模块、关键变更），输出到 /Users/lovin/Desktop/output/daily_report.md
+/claude-api 写一个 Shell + Python 脚本，读取当天的 git log，调用 Claude API 生成一份结构化的工作日报（做了什么、改了哪些模块、关键变更），输出到 ~/Desktop/output/daily_report.md
 
 ---
 

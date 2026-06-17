@@ -4,5 +4,8 @@
 # Claude Code local config
 .claude/
 
+# Dependencies
+node_modules/
+
 # macOS
 .DS_Store
