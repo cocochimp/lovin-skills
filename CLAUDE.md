@@ -1,48 +1,59 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+本文件为 Claude Code 提供仓库级别的工作指引。
 
-## Project
+## 项目简介
 
-This repository (`lovin-skills`) is a collection of Claude Code agent skills. Each skill is a self-contained prompt-driven capability that extends Claude Code's behavior when triggered by specific user phrases or contexts.
+`lovin-skills` 是 Claude Code agent skills 集合仓库。每个 skill 是一个独立的 prompt 驱动能力，在特定触发词或上下文中扩展 Claude Code 的行为。
 
-## Repository Structure
+## 仓库结构
 
-Skills live in two locations:
+- **根目录**：各 skill 的源文件目录，是 skill 内容的主存储位置
+- **`.claude/skills/`**：通过符号链接引用根目录的 skill 源文件，Claude Code 运行时加载此目录
 
-- `.claude/skills/` — Installed/active skills loaded by Claude Code at runtime. Each skill has a `SKILL.md` (the contract) and optional supporting files (references, scripts, assets, templates).
-- Root-level directories (`yuque-weekly-report/`, `skill-scenario-generator/`) — Standalone skill definitions not yet installed into `.claude/skills/`.
-
-`skills-lock.json` tracks externally sourced skills (e.g., from `vercel-labs/skills`) with content hashes for integrity.
-
-## Skill Anatomy
-
-Every skill is defined by a `SKILL.md` with YAML frontmatter:
-
-```yaml
----
-name: skill-name
-description: "Trigger description — when/how the skill activates"
----
+```
+lovin-skills/
+├── ddd-rules-generator/          # DDD 规则生成器（源文件）
+├── gzh-review/                   # 公众号数据复盘（源文件）
+├── gzh-writes/                   # 公众号写作（源文件）
+├── skill-scenario-generator/     # Skill 场景生成器（源文件）
+├── yuque-weekly-report/          # 语雀周报生成器（源文件）
+├── spec-skills/                  # Spec 工作流 skills（源文件）
+├── .claude/skills/               # 符号链接 → 根目录（Claude Code 运行时加载）
+├── docs/                         # 产出物（文章、图片等）
+└── skills-lock.json              # 外部 skill 锁定文件
 ```
 
-The body contains the skill's prompt: workflow steps, constraints, output format, and examples. Supporting files go in subdirectories:
-- `references/` — domain knowledge, prompt templates, cheat sheets
-- `scripts/` — executable tooling (Python, JS) the skill invokes
-- `assets/` — templates, images, static resources
-- `templates/` — output format templates
+## 关键指令：符号链接自动创建
 
-## Installed Skills
+当 `.claude/skills/` 下缺少项目自维护 skill 的符号链接时，Claude Code 应自动执行以下命令创建：
 
-- `ljg-card` — Content-to-PNG visual renderer with 7 output modes (long card, infograph, multi-card, sketchnote, comic, whiteboard, big-fonts). Uses Playwright (`capture.js`) to render HTML templates.
-- `ljg-roundtable` — Multi-perspective structured debate framework with moderator.
-- `ljg-writes` — Chinese critical writing engine (Org-mode output, 1000-1500 chars).
-- `brainstorming` — Pre-implementation design exploration. Enforces a design-first gate before any creative/building work.
-- `daisy-financial-research` — Autonomous stock/sector research with Tushare data, DCF valuation, screening, and multi-agent debate. Has its own `CLAUDE.md`, Python scripts, and test suite. See `.claude/skills/daisy-financial-research/CLAUDE.md` for its internal conventions.
+```bash
+cd .claude/skills
+ln -sf ../../ddd-rules-generator ddd-rules-generator
+ln -sf ../../gzh-review gzh-review
+ln -sf ../../gzh-writes gzh-writes
+ln -sf ../../skill-scenario-generator skill-scenario-generator
+ln -sf ../../yuque-weekly-report yuque-weekly-report
+```
 
-## Conventions
+> **注意**：`.claude/` 目录在 `.gitignore` 中被忽略，因此符号链接不会被 git 跟踪。克隆仓库后，Claude Code 会根据以上指令自动创建所需的符号链接。
 
-- Skills are prompt-first: the `SKILL.md` is the canonical user-facing contract. All other files support it.
-- Trigger phrases are defined in the `description` frontmatter field — this is how Claude Code decides when to activate a skill.
-- Skills that use Python scripts follow an agent-native CLI pattern with `--format json|table`, `--schema`, `--dry-run`, and structured exit codes.
-- Output paths default to `~/Downloads/` (visual skills) or `./financial-research/` (data skills) unless overridden.
+## Skill 列表
+
+| Skill | 触发词 | 简介 |
+|-------|--------|------|
+| `ddd-rules-generator` | "生成DDD规则"、"更新DDD规则"、"ddd rules"、"同步DDD规则" | 从语雀 DDD 文档中提炼 Claude Code Rules 编码规则 |
+| `gzh-review` | `/gzh-review`、公众号数据复盘 | 分析微信公众号文章数据，生成优化建议 |
+| `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号自媒体内容生产全流程：选题→写文→配图→发布 |
+| `skill-scenario-generator` | "Skill 使用案例"、"Skill 具体场景" | 为指定 Skill 生成 5 个可复制执行的玩法场景 |
+| `yuque-weekly-report` | "写周报"、"生成周报"、"本周总结"、"weekly report" | 根据语雀新增文档自动生成周报 |
+| `ljg-roundtable` | "圆桌讨论"、"圆桌"、"roundtable"、"辩论" | 多角色结构化辩论，由求真主持人引导讨论 |
+| `spec-skills/*` | spec 相关操作 | Spec 驱动开发工作流（coding、design、detail、explore、proposal、workflow） |
+
+## 开发规范
+
+- 提交信息用英文，格式：`feat: xxx`、`fix: xxx`、`chore: xxx`
+- 代码注释保持简洁，避免冗余描述
+- Skill 以 prompt 为先：`SKILL.md` 是面向用户的核心契约，其他文件起辅助作用
+- 触发词定义在 `SKILL.md` 的 YAML frontmatter `description` 字段
