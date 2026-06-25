@@ -65,6 +65,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
+    "lib": ["ES2023"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -835,7 +836,7 @@ describe("Orchestrator", () => {
     for (let i = 0; i < 5; i++) {
       await vi.waitFor(() => expect(events.findLast((e) => e.event === "present")).toBeTruthy());
       const present = events.findLast((e) => e.event === "present") as any;
-      events.length = events.indexOf(present) + 1; // 标记已消费，等待下一个
+      events.length = events.indexOf(present); // 移除已消费的 present，等待下一个
       orch.respond(t.id, present.data.gateId, { type: "confirm", selection: 0 });
     }
     await vi.waitFor(() => expect(events.some((e) => e.event === "done")).toBe(true));
@@ -1123,3 +1124,26 @@ git add . && git commit -q -m "feat: wire REST and SSE routes over mock orchestr
 - **计划 2：** 前端三视图（React+Vite+shadcn），由本计划的 Mock 后端驱动，产出可点端到端原型。
 - **计划 3：** 真 Agent SDK 实现 `AgentRunner`（加载 gzh-writes skill、present_* 工具映射、会话 resume、`/hotspots/refresh` 真抓取），替换 MockAgent。
 - **计划 4：** 截图管道（puppeteer + skill 模板）与发布（publish.js）接入配图/发布步。
+
+---
+
+## 交接说明（来自计划 1 最终整体 review）
+
+计划 1 已完成，整体 review 结论 **READY**：23 测试通过、tsc 干净、端到端 HTTP 冒烟（POST /api/tasks → SSE → respond×5 → done）实测通过。模块边界清晰，`AgentRunner`/`AgentContext` 是干净的可替换缝。
+
+**实现中相对计划的三处必要改进（已合入）：**
+1. `DataStore.updateTask` 加 per-task 串行写队列，修复并发 read-modify-write 丢更新。
+2. SSE handler 加 `reply.hijack()`，防止 Fastify 双发。
+3. `orchestrator.respond` 用 `.catch(()=>{})` 处理 `updateTask` rejection。
+
+**给计划 2（前端）：**
+- HTTP 契约已稳定且实测：`POST /api/tasks {seed?}`→TaskRecord；SSE `/api/tasks/:id/stream` 推 `event:`/`data:` 帧；`POST /api/tasks/:id/respond {gateId, ...GateResponse}`。前端须从每个 `present` 事件捕获 `gateId` 回传。
+- **`Last-Event-ID` 续传未实现**：重连后前端应改为重新 `GET /api/tasks/:id` + 各步缓存重建状态，勿依赖回放。
+- **`DELETE /api/tasks/:id` 未实现**（spec §7 列出，Task 8 路由清单未含）：DraftList 删除前需补这个路由。
+- config PUT 端点不做校验，前端负责载荷形状正确。
+
+**给计划 3（真 Agent SDK）：**
+- 替换点是 `routes.ts` 里 `makeAgent` 这一个 lambda，其他模块不动。
+- **把 `gates.abort(taskId)` 接入 `orchestrator.run` 的 catch**：真 agent 在 gate pending 时抛错会永久泄漏 Promise。注意需同时保持 `present()` 现有顺序（先 `saveStep`+`updateTask("awaiting")` 再 `gates.open` 发 present 事件），并妥善处理 happy-path 状态写顺序——计划 1 中一次"提前发 present + abort 标志"的尝试因破坏该顺序已回退。
+- 补错误路径测试（故障注入 agent → 断言 SSE `error` + pending gates 被 reject）。
+- `/api/hotspots/refresh` 真抓取在此计划落地（计划 1 仅 `GET /api/hotspots` 读缓存）。
