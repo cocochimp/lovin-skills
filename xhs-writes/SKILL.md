@@ -52,11 +52,11 @@ mkdir -p ~/.xhs-data/{profile/goodcase,trending/goodcase,articles,snapshots,insi
 3. 如果没有选题：
    - 进入阶段2
 
-### 阶段2：拉取低粉爆款 + 选题建议（10分钟）
+### 阶段2：拉取爆款笔记 + 选题建议（10分钟）
 
 1. 读取 `~/.xhs-data/profile/profile.md` 的**查询标签**
 2. 使用 ego-browser 打开小红书，用查询标签搜索
-3. 筛选低粉爆款（粉丝<5000，互动>500）
+3. 筛选爆款笔记（点赞 500~2万，剔除官方/机构号）
 4. 剔除无效内容（纯贴图、无参考价值等）
 5. 更新 `~/.xhs-data/trending/`（style.md、goodcase/、title-patterns.md）
 6. 结合个人风格，生成5个选题建议
@@ -85,7 +85,7 @@ mkdir -p ~/.xhs-data/{profile/goodcase,trending/goodcase,articles,snapshots,insi
 
 ## ego-browser 调用
 
-### 搜索低粉爆款（阶段2）
+### 搜索爆款笔记（阶段2）
 
 ```javascript
 ego-browser nodejs <<'EOFBROWSER'
@@ -93,8 +93,8 @@ const task = await taskSpace("search trending");
 const page = task.page("p1");
 await page.goto("https://www.xiaohongshu.com/search_result?keyword=<查询标签>");
 await new Promise(r => setTimeout(r, 3000));
-// 提取笔记列表：标题、作者、粉丝数、互动数据
-// 筛选：粉丝<5000，互动>500
+// 提取笔记列表：标题、作者、点赞数（卡片 .like-wrapper .count）
+// 筛选：点赞 500~2万，剔除官方/机构号
 await task.finish({ keep: [] });
 EOFBROWSER
 ```
