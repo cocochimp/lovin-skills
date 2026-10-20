@@ -41,6 +41,8 @@ ln -sf ../../skill-scenario-generator skill-scenario-generator
 | `gzh-review` | `/gzh-review`、公众号数据复盘 | 分析微信公众号文章数据，生成优化建议 |
 | `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号自媒体内容生产全流程：选题→写文→配图→发布 |
 | `skill-scenario-generator` | "Skill 使用案例"、"Skill 具体场景" | 为指定 Skill 生成 5 个可复制执行的玩法场景 |
+| `xhs-writes` | "写小红书"、"小红书笔记" | 小红书内容生成 |
+| `xhs-review` | "复盘小红书"、"小红书数据" | 小红书数据复盘 |
 
 ## 开发规范
 

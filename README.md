@@ -9,6 +9,8 @@ Claude Code agent skills 集合仓库。每个 skill 是独立的 prompt 驱动�
 | `gzh-review` | `/gzh-review` | 分析微信公众号文章运营数据，生成优化建议 |
 | `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号内容生产全流程：选题→写作→配图→发布 |
 | `skill-scenario-generator` | "Skill 使用案例"、"具体场景" | 为任意 Skill 生成 5 个可直接复制执行的玩法场景 |
+| `xhs-writes` | "写小红书"、"小红书笔记"、`/xhs-writes` | 小红书内容生成：选题→标题→内容 |
+| `xhs-review` | "复盘小红书"、"小红书数据"、`/xhs-review` | 小红书数据复盘：分析→快照→策略 |
 
 ## 使用方式
 
@@ -38,6 +40,20 @@ lovin-skills/
 │   └── scripts/                  # 发布、格式转换脚本
 ├── skill-scenario-generator/     # Skill 场景生成器
 │   └── SKILL.md
+├── xhs-writes/                   # 小红书内容生成
+│   ├── SKILL.md
+│   ├── config/                   # 写作配置
+│   └── references/               # 风格指南
+├── xhs-review/                   # 小红书数据复盘
+│   ├── SKILL.md
+│   ├── templates/                # 复盘报告模板
+│   └── config/                   # 复盘配置
+├── xhs-data/                     # 小红书共享数据
+│   ├── profile/                  # 个人风格
+│   ├── trending/                 # 热门风格
+│   ├── articles/                 # 生成的文章
+│   ├── snapshots/                # 复盘快照
+│   └── insights/                 # 策略总结
 ├── .claude/skills/               # 符号链接 → 根目录（Claude Code 加载）
 ├── docs/                         # 产出物（文章、封面图、数据图）
 └── skills-lock.json              # 外部 skill 锁定（含内容哈希）
