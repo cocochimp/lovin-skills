@@ -1,6 +1,6 @@
 ---
 name: xhs-review
-description: "小红书复盘 skill。当用户说"复盘小红书"、"小红书数据"、"xhs-review"时触发。"
+description: 小红书复盘 skill。当用户说“复盘小红书”、“小红书数据”、“xhs-review”时触发。
 ---
 
 # 小红书复盘

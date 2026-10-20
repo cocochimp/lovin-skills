@@ -1,6 +1,6 @@
 ---
 name: xhs-writes
-description: "小红书内容生成 skill。当用户说"写小红书"、"小红书笔记"、"xhs-writes"时触发。"
+description: 小红书内容生成 skill。当用户说“写小红书”、“小红书笔记”、“xhs-writes”时触发。
 ---
 
 # 小红书内容生成
