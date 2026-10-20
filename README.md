@@ -9,7 +9,6 @@ Claude Code agent skills 集合仓库。每个 skill 是独立的 prompt 驱动�
 | `gzh-review` | `/gzh-review` | 分析微信公众号文章运营数据，生成优化建议 |
 | `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号内容生产全流程：选题→写作→配图→发布 |
 | `skill-scenario-generator` | "Skill 使用案例"、"具体场景" | 为任意 Skill 生成 5 个可直接复制执行的玩法场景 |
-| `spec-skills` | spec 相关操作 | Spec 驱动开发工作流（coding、design、detail、explore、proposal、workflow） |
 
 ## 使用方式
 
@@ -39,13 +38,6 @@ lovin-skills/
 │   └── scripts/                  # 发布、格式转换脚本
 ├── skill-scenario-generator/     # Skill 场景生成器
 │   └── SKILL.md
-├── spec-skills/                  # Spec 工作流 skills
-│   ├── spec-coding/
-│   ├── spec-design/
-│   ├── spec-detail/
-│   ├── spec-explore/
-│   ├── spec-proposal/
-│   └── spec-workflow/
 ├── .claude/skills/               # 符号链接 → 根目录（Claude Code 加载）
 ├── docs/                         # 产出物（文章、封面图、数据图）
 └── skills-lock.json              # 外部 skill 锁定（含内容哈希）

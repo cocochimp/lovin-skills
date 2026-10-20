@@ -16,7 +16,6 @@ lovin-skills/
 ├── gzh-review/                   # 公众号数据复盘（源文件）
 ├── gzh-writes/                   # 公众号写作（源文件）
 ├── skill-scenario-generator/     # Skill 场景生成器（源文件）
-├── spec-skills/                  # Spec 工作流 skills（源文件）
 ├── .claude/skills/               # 符号链接 → 根目录（Claude Code 运行时加载）
 ├── docs/                         # 产出物（文章、图片等）
 └── skills-lock.json              # 外部 skill 锁定文件
@@ -42,7 +41,6 @@ ln -sf ../../skill-scenario-generator skill-scenario-generator
 | `gzh-review` | `/gzh-review`、公众号数据复盘 | 分析微信公众号文章数据，生成优化建议 |
 | `gzh-writes` | "公众号"、"写公众号"、"gzh"、`/gzh-writes` | 公众号自媒体内容生产全流程：选题→写文→配图→发布 |
 | `skill-scenario-generator` | "Skill 使用案例"、"Skill 具体场景" | 为指定 Skill 生成 5 个可复制执行的玩法场景 |
-| `spec-skills/*` | spec 相关操作 | Spec 驱动开发工作流（coding、design、detail、explore、proposal、workflow） |
 
 ## 开发规范
 
