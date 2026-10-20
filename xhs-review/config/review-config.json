@@ -1,0 +1,5 @@
+{
+  "defaultArticleCount": 5,
+  "snapshotDir": "../xhs-data/snapshots",
+  "insightsFile": "../xhs-data/insights/insights.md"
+}
