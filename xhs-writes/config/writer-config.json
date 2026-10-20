@@ -8,5 +8,5 @@
     "maxFollowers": 5000,
     "minEngagement": 500
   },
-  "outputDir": "../xhs-data/articles"
+  "outputDir": "~/.xhs-data/articles"
 }
