@@ -1,0 +1,86 @@
+{
+  "updated_at": "2026-10-22",
+  "note": "选题建议池。用户没有选题时，xhs-writes 从这里挑选并给出 5 个候选；新选题由复盘/人工确认后追加。",
+  "topics": [
+    {
+      "id": "T01",
+      "topic": "大厂月薪3w，到手变2w？（薪资真相）",
+      "type": "truth",
+      "evidence": "已发布，主页卡片64，20评/3905浏览，评论区有共鸣",
+      "status": "published_high_potential",
+      "next_action": "系列可续：月薪5w到手多少？年终奖/期权到手价"
+    },
+    {
+      "id": "T02",
+      "topic": "一日大厂评测：快手Java vs 阿里Agent",
+      "type": "truth",
+      "evidence": "已发布，16赞；差异化亲历双厂双岗",
+      "status": "published",
+      "next_action": "系列可续：快手 vs 阿里 的晋升/裁员/食堂真实对比"
+    },
+    {
+      "id": "T03",
+      "topic": "Agent才1岁多，市场要求5年以上经验",
+      "type": "truth",
+      "evidence": "对标爆款3688赞（时间差+荒谬感最强钩子）；本人Java→Agent转型亲历者",
+      "status": "high_priority_unwritten",
+      "next_action": "可写：从Java转Agent，我如何应对'市场要5年经验'"
+    },
+    {
+      "id": "T04",
+      "topic": "AI时代没有demo的简历正在失效",
+      "type": "method",
+      "evidence": "对标爆款1069赞；直接服务简历包装变现",
+      "status": "high_priority_unwritten",
+      "next_action": "可写：简历从'经历罗列'升级为'自我验证'，附demo写法模板"
+    },
+    {
+      "id": "T05",
+      "topic": "双非简历怎么写才能进大厂（筛选逻辑）",
+      "type": "method",
+      "evidence": "爆款《投了3000份简历才知道这才是大厂喜欢的》(2854赞)；面试官视角",
+      "status": "high_priority_unwritten",
+      "next_action": "面试官视角：双非简历一眼被筛掉的3个坑"
+    },
+    {
+      "id": "T06",
+      "topic": "Java转Agent：要不要转、怎么转、简历怎么写",
+      "type": "method",
+      "evidence": "爆款《29岁Java女被裁转战Agent》(1151赞)；本人Java→Agent亲历",
+      "status": "medium_priority_unwritten",
+      "next_action": "路线+简历+面试问答组合"
+    },
+    {
+      "id": "T07",
+      "topic": "大厂谈薪：offer怎么谈、到手怎么算",
+      "type": "method",
+      "evidence": "爆款《秋招暴论：无脑选择薪资最高的offer》(2330赞)；月薪篇验证谈薪话题有争议",
+      "status": "medium_priority_unwritten",
+      "next_action": "谈薪话术+避坑清单（收藏型）"
+    },
+    {
+      "id": "T08",
+      "topic": "面试官视角：什么样的回答会挂",
+      "type": "method",
+      "evidence": "爆款《面试过这么多后端女生这个我是真喜欢》(679赞)；本人面试官",
+      "status": "medium_priority_unwritten",
+      "next_action": "问答复盘：🎯我问 💡她答"
+    },
+    {
+      "id": "T09",
+      "topic": "给想转Agent的后端同学：工程化底子是最大优势",
+      "type": "method",
+      "evidence": "本人双厂双岗经验；与T06区分：聚焦'后端转Agent的优势'",
+      "status": "low_priority_unwritten",
+      "next_action": "异常兜底/熔断降级/链路追踪 如何迁移到Agent"
+    },
+    {
+      "id": "T10",
+      "topic": "大厂做Agent的真实一天（祛魅）",
+      "type": "truth",
+      "evidence": "系列模板持续有量（17k/18k/30k Agent一天都有爆款）",
+      "status": "low_priority_unwritten",
+      "next_action": "可与T02合并为系列，配时间轴+吐槽"
+    }
+  ]
+}

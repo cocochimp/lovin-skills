@@ -1,0 +1,4 @@
+#!/bin/bash
+# post-commit hook: git 提交成功后，自动同步 xhs-writes / xhs-review
+# 到 Doubao 运行时 .user_skills 目录，保证运行时跟随 git 最新版本。
+exec /usr/bin/python3 /Users/Doc/agent/lovin-skills/scripts/sync_xhs_skills.py

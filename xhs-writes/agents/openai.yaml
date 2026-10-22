@@ -1,4 +1,0 @@
-interface:
-  display_name: "小红书写作"
-  short_description: "生成小红书爆款内容：选题→标题→正文"
-  default_prompt: "帮我写一篇小红书笔记"

@@ -1,0 +1,43 @@
+{
+  "updated_at": "2026-10-22",
+  "note": "结构化文章数据。每次 xhs-review 复盘时先同步最新数据再分析；articles/ 中每篇 frontmatter 的 note_id 与此处对应。",
+  "views_note": "若登录账号非本人主页、无法看到 views 时，views 留空（null），且 engagement_rate 不计算。",
+  "notes": [
+    {
+      "note_id": "6ad8ba16000000002403c549",
+      "title": "一日大厂评测：快手Java vs 阿里Agent",
+      "published_date": "2026-10-18",
+      "views": null,
+      "likes": 16,
+      "favorites": null,
+      "comments": null,
+      "favorite_like_ratio": null,
+      "engagement_rate": null,
+      "note": "主页卡片采集；收藏/评论/浏览待补充"
+    },
+    {
+      "note_id": "6ad60d9000000000270347c0",
+      "title": "大厂月薪3w，到手变2w？",
+      "published_date": "2026-10-19",
+      "views": 3905,
+      "likes": 16,
+      "favorites": 6,
+      "comments": 20,
+      "favorite_like_ratio": 0.38,
+      "engagement_rate": 0.011,
+      "note": "编辑页快照（2026-10-21）：3905浏览/16赞/6藏/20评；主页卡片显示64（可能为赞藏合计）"
+    },
+    {
+      "note_id": "6ad35911000000000b00491f",
+      "title": "上岸阿里，竞赛对进大厂有帮助吗？",
+      "published_date": "2026-10-17",
+      "views": null,
+      "likes": 6,
+      "favorites": null,
+      "comments": null,
+      "favorite_like_ratio": null,
+      "engagement_rate": null,
+      "note": "主页卡片采集；收藏/评论/浏览待补充"
+    }
+  ]
+}
